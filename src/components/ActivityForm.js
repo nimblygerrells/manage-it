@@ -1,30 +1,29 @@
-import React, { useState } from 'react';
-import {
-  TextField,
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  InputAdornment,
-  Grid,
-  Box,
-} from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { TextField, Card, CardContent, Typography, Button, InputAdornment, Grid, Box } from '@material-ui/core';
 import { Alarm, Message } from '@material-ui/icons';
 
+const defaultFormState = {
+  content: '',
+  time: false,
+  timeUnit: 'hour',
+  replies: [],
+};
+const stateStorageKey = 'mit-activityForm';
+const loadState = () => JSON.parse(localStorage.getItem(stateStorageKey)) || { ...defaultFormState };
+
 export default ({ onCreateActivity }) => {
-  const [activity, setActivity] = useState({
-    content: '',
-    time: false,
-    timeUnit: 'hour',
-    replies: [],
-  });
+  const [activity, setActivity] = useState(loadState());
+  useEffect(() => {
+    localStorage.setItem(stateStorageKey, JSON.stringify(activity));
+  }, [activity]);
+
   const handleChange = field => event => {
     setActivity({ ...activity, [field]: event.target.value });
   };
-
   const submit = event => {
     event.preventDefault();
-    onCreateActivity(activity);
+    onCreateActivity && onCreateActivity(activity);
+    setActivity(defaultFormState);
   };
 
   return (
