@@ -3,6 +3,7 @@ import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import theme from './theme';
 import './styles.css';
+import ActivityForm from 'components/ActivityForm';
 import AccountsPage from './AccountsPage';
 import AccountCreatePage from './AccountCreatePage';
 import { WorkstreamsPage, WorkstreamPage } from 'workstream';
@@ -27,6 +28,9 @@ export default function App() {
             </Route>
             <Route path="/account/:accountId/workstream/:workstreamId">
               <WorkstreamPage />
+            </Route>
+            <Route exact path="/test">
+              <ActivityForm />
             </Route>
           </Switch>
         </Router>

@@ -6,28 +6,16 @@ import {
   Typography,
   Button,
   InputAdornment,
-  FormControl,
-  Select,
-  InputLabel,
-  MenuItem,
   Grid,
   Box,
 } from '@material-ui/core';
-import { AccountCircle, Message } from '@material-ui/icons';
-import { useHistory } from 'react-router-dom';
-import AccountBreadCrumb from 'AccountBreadCrumb';
-import AppSideDrawer from 'components/AppSideDrawer';
-import PageContainer from 'components/PageContainer';
-import PageContent from 'components/PageContent';
-import { addAccount } from 'dataStore';
+import { Alarm, Message } from '@material-ui/icons';
 
 export default ({ onCreateActivity }) => {
-  const history = useHistory();
   const [activity, setActivity] = useState({
     content: '',
-    time: 0,
+    time: false,
     timeUnit: 'hour',
-    assignee: false,
     replies: [],
   });
   const handleChange = field => event => {
@@ -47,7 +35,7 @@ export default ({ onCreateActivity }) => {
         </Box>
         <form autoComplete="off" onSubmit={submit}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 value={activity.content}
                 autoFocus
@@ -55,7 +43,8 @@ export default ({ onCreateActivity }) => {
                 variant="outlined"
                 fullWidth
                 multiline
-                helperText="...BPR practice run..."
+                rows={3}
+                helperText="What did I do?"
                 required={true}
                 InputProps={{
                   startAdornment: (
@@ -67,34 +56,24 @@ export default ({ onCreateActivity }) => {
                 onChange={handleChange('content')}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 value={activity.time}
-                required
+                required={true}
                 type="number"
-                label="Time"
+                label="Time (hours)"
                 variant="outlined"
+                helperText="How long did it take?"
                 fullWidth
                 onChange={handleChange('time')}
                 InputProps={{
-                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Alarm />
+                    </InputAdornment>
+                  ),
                 }}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl variant="outlined" fullWidth>
-                <InputLabel id="service-line-label">Service Line</InputLabel>
-                <Select
-                  labelId="service-line-label"
-                  id="service-line-select"
-                  onChange={handleChange('serviceLine')}
-                  labelWidth={92}
-                  value={activity.assignee}
-                >
-                  <MenuItem value={'OnDemand'}>OnDemand</MenuItem>
-                  <MenuItem value={'Impact'}>Impact</MenuItem>
-                </Select>
-              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <Button variant="contained" color="primary" type="submit">
